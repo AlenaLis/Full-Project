@@ -1,0 +1,29 @@
+.wrapper__all{
+  width: 100%;
+  max-width: 1070px;
+  margin: 0 auto;
+  min-height: calc(100vh - 95px - 256px);
+}
+
+@media screen and (max-width: 1073px) {
+
+  .main__top {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+  }
+
+  .main__bottom__new {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+  }
+
+  .h1__main {
+    display: flex;
+    justify-content: center;
+  }
+}
+
