@@ -1,5 +1,5 @@
-import {Link, Redirect} from 'react-router-dom';
 import React, {useEffect, useState} from 'react';
+import {Link, Redirect} from 'react-router-dom';
 
 import human1 from '../../assets/images/human.png';
 import eye from '../../assets/images/eye icon.png';

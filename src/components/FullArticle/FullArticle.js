@@ -1,5 +1,5 @@
-import React from 'react';
 import {Link, useParams} from 'react-router-dom';
+import React from 'react';
 
 import img_human from '../../assets/images/human.png';
 import eye from '../../assets/images/eye icon.png';
