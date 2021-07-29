@@ -69,7 +69,12 @@ const Main = () => {
               </div>
               <div>
                 <h2 className="h2__text">
-                  {mainArticle?.title}
+                  <Link
+                    to={`/fullart/${mainArticle?.id}/`}
+                    path="/fullart/:id/"
+                  >
+                    {mainArticle?.title}
+                  </Link>
                 </h2>
                 <p className="p__text">
                   <div
@@ -216,7 +221,7 @@ const Main = () => {
         :
         <div>
           <h2 className="h2__no__articles">
-            Log in to see all articles
+            No articles here
           </h2>
         </div>
       }

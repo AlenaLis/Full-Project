@@ -18,7 +18,7 @@ const AddArt = () => {
     date: Date.now(),
     date2: '',
     id: '',
-    watches: '14',
+    watches: '13',
     image: '',
   });
 
