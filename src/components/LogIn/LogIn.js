@@ -4,6 +4,7 @@ import {Link, Redirect} from 'react-router-dom';
 import userValid from '../../assets/Services/userValid';
 
 import './LogIn.scss';
+import {login} from "../../services";
 
 const LogIn = () => {
 
@@ -28,12 +29,21 @@ const LogIn = () => {
   }, [])
 
   const setPersons = () => {
-    setAllPersons(userValid(person))
-  };
 
+    login({
+      inputForEmail: person.inputForEmail.value,
+      inputForPassword: person.inputForPassword.value
+    }).then(res => {
+      console.log('===>res', res);
+      localStorage.setItem('token', res.token)
+
+    })
+    // setAllPersons(userValid(person))
+  };
+  const token = localStorage.getItem('token');
   const checkPerson = async () => {
     await setPersons()
-    window.location.reload();
+     //window.location.reload();
   };
 
   const handleChange = (e, key) => {
