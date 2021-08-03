@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback,useState, useEffect} from 'react';
 import {Editor} from 'react-draft-wysiwyg';
 import {EditorState, convertToRaw} from 'draft-js';
 import {Redirect} from 'react-router-dom';
@@ -7,6 +7,7 @@ import draftToHtml from 'draftjs-to-html';
 
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './AddArt.scss';
+import {addOneArticle, login, registration} from "../../services";
 
 const AddArt = () => {
 
@@ -17,10 +18,12 @@ const AddArt = () => {
     description: EditorState.createEmpty(),
     date: Date.now(),
     date2: '',
-    id: '',
-    watches: '13',
+    idUser: '',
+    idArt: '',
     image: '',
   });
+
+  const token = localStorage.getItem('token');
 
   let newDate = dataForm.date;
   newDate = new Date().toLocaleDateString();
@@ -49,17 +52,27 @@ const AddArt = () => {
       }))
     }
   }
+  console.log('===>datewfeewfaForm.title', dataForm.title);
 
-  const [isLogin, setIsLogin] = useState(JSON.parse(localStorage.getItem('isLogin')))
-  const lastArt = JSON.parse(localStorage.getItem("art"));
+  const setArt =  useCallback( () => {
+    addOneArticle({
+      title: dataForm.title,
+      category: dataForm.category,
+      textArt: dataForm.titleForShow,
+      // image: dataForm.image,
+      // user: dataForm.idUser,
+      // _id: dataForm.idArt
+    }).then(res => {
+      console.log('===>article', res);
+    })
+  }, [dataForm])
 
-  const createNewArt = () => {
-    if (lastArt && lastArt.length > 0) {
-      lastArt.push(dataForm);
-      localStorage.setItem('art', JSON.stringify(lastArt))
-    } else {
-      localStorage.setItem('art', JSON.stringify([dataForm]))
-    }
+  // useEffect(() => {
+  //   addOneArticle()
+  // }, [])
+  const  createNewArt = () => {
+    console.log('===>dataForm', dataForm);
+    setArt()
   }
 
   return (
@@ -120,7 +133,7 @@ const AddArt = () => {
           </button>
         </div>
       </div>
-      {!isLogin && <Redirect to="/"/>}
+      {!token && <Redirect to="/"/>}
     </div>
   )
 }

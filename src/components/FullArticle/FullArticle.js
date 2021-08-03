@@ -1,18 +1,64 @@
 import {Link, useParams} from 'react-router-dom';
-import React from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 
 import img_human from '../../assets/images/human.png';
 import eye from '../../assets/images/eye icon.png';
 import './FullArticle.scss';
+import {getAllArticles, getOneArticle, getProfileInfo} from "../../services";
 
 const FullArticle = () => {
 
-  let {id} = useParams();
+  // let {id} = useParams();
 
-  const myArticle = JSON.parse(localStorage.getItem("art"));
-  const oneArt = myArticle?.filter((myArticle => myArticle.id === +id))[0];
-  const user = JSON.parse(localStorage.getItem("myUser"));
+  // const myArticle = JSON.parse(localStorage.getItem("art"));
+  // const oneArt = myArticle?.filter((myArticle => myArticle.id === +id))[0];
+  // const user = JSON.parse(localStorage.getItem("myUser"));
 
+
+
+  const [myArticle, setMyArticle] = useState([])
+
+  const getOneArticle = useCallback(() => {
+    getOneArticle().then((res) => {
+      console.log('===>res', res);
+      setMyArticle(res)
+    })
+  }, [])
+
+  const userId = localStorage.getItem('userId')
+  const [myInfo, setMyInfo] = useState([])
+
+  const getProfileApi = useCallback(() => {
+    getProfileInfo({
+    }, userId).then(res => {
+      setMyInfo(res)
+    })
+  }, [])
+  // const getAllArticle = useCallback(() => {
+  //   getAllArticles().then((res) => {
+  //     console.log('===>res', res);
+  //     setMyArticle(res)
+  //   })
+  // }, [])
+  // useEffect(() => {
+  //   getAllArticle()
+  // }, [])
+  useEffect(() => {
+    getOneArticle()
+  }, [])
+
+  useEffect(() => {
+    if (!myArticle) {
+      localStorage.setItem('art', JSON.stringify([]))
+    }
+  }, [])
+  // useEffect(() => {
+  //   if (!myArticle) {
+  //     localStorage.setItem('art', JSON.stringify([]))
+  //   }
+  // }, [])
+  // const oneArt = myArticle?.filter((myArticle => myArticle._id ))[0];
+  // console.log('===>oneArt', oneArt);
   return (
     <div>
       <div className="Art__container">
@@ -24,16 +70,16 @@ const FullArticle = () => {
             <div className="main__bottom__art">
               <div className="main__bottom__new">
                 <div>
-                  <button>{oneArt?.category}</button>
+                  {/*<button>{oneArt?.category}</button>*/}
                 </div>
                 <h2 className="h2__text">
-                  {oneArt?.title}
+                  {/*{oneArt?.title}*/}
                 </h2>
                 <div className="main__panel__bottom__art">
                   <div>
                     <p className="p__text">
                       <div
-                        dangerouslySetInnerHTML={{__html: oneArt.titleForShow}}
+                        // dangerouslySetInnerHTML={{__html: oneArt.titleForShow}}
                         className="p__text"
                       />
                     </p>
@@ -51,27 +97,27 @@ const FullArticle = () => {
                         </div>
                         <div>
                           <p className="p__human">
-                            {user[0].firstName
-                              ?
-                              user[0].firstName.value
-                              + ' ' +
-                              user[0].secondName.value
-                              :
-                              user[0].firstNameInput.value
-                              + ' ' +
-                              user[0].secondNameInput.value}
+                            {/*{user[0].firstName*/}
+                            {/*  ?*/}
+                            {/*  user[0].firstName.value*/}
+                            {/*  + ' ' +*/}
+                            {/*  user[0].secondName.value*/}
+                            {/*  :*/}
+                            {/*  user[0].firstNameInput.value*/}
+                            {/*  + ' ' +*/}
+                            {/*  user[0].secondNameInput.value}*/}
                           </p>
                         </div>
                       </div>
                       <div>
-                        <p className="p__human__second">{oneArt?.data2}</p>
+                        {/*<p className="p__human__second">{oneArt?.data2}</p>*/}
                       </div>
                       <div className="main__panel__bottom__human__second">
                         <div>
                           <img src={eye}/>
                         </div>
                         <div>
-                          <p className="p__human__second">{oneArt?.watches}</p>
+                          {/*<p className="p__human__second">{oneArt?.count}</p>*/}
                         </div>
                       </div>
                     </div>

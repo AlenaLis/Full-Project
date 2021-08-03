@@ -20,17 +20,17 @@ export const registration = (data) => {
   });
 };
 
-export const profileInfo = (data, id) => {
+export const changeProfileInfo = (data, id) => {
   const url = `${urls.USER}/${id}`;
   return ajaxWrapper({
     method: 'PATCH',
     url,
     data,
-  });
+  }).then(data => data.data)
 };
 
-export const getAllArticles = (data) => {
-  const url = `${urls.ARTICLE}`;
+export const getProfileInfo = (data, id) => {
+  const url = `${urls.USER}/${id}`;
   return ajaxWrapper({
     method: 'GET',
     url,
@@ -38,11 +38,20 @@ export const getAllArticles = (data) => {
   }).then(data => data.data)
 };
 
-export const getOneArticle = (id) => {
-  const url = `${urls.ARTICLE}/${id}`;
+export const getAllArticles = () => {
+  const url = `${urls.CATEGORY}`;
   return ajaxWrapper({
     method: 'GET',
     url,
+  }).then(data => data.data)
+};
+
+export const getOneArticle = (data, id) => {
+  const url = `${urls.CATEGORY}/${id}`;
+  return ajaxWrapper({
+    method: 'GET',
+    url,
+    data,
   }).then(data => data.data)
 };
 
@@ -55,7 +64,8 @@ export const countWatches = (id) => {
 };
 
 export const addOneArticle = (data) => {
-  const url = `${urls.ARTICLE}`;
+  console.log('===>data', data);
+  const url = `${urls.CATEGORY}`;
   return ajaxWrapper({
     method: 'POST',
     url,

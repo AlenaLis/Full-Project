@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 
 import validation from '../../assets/Services/validation';
 
@@ -44,29 +44,23 @@ const SignIn = () => {
     }))
   };
 
+  const setRegisterApi = useCallback(() => {
+    registration({
+      inputForEmail: form.emailInput.value,
+      inputForPassword: form.passwordInput.value,
+      name:form.firstNameInput.value,
+      lastName:form.secondNameInput.value,
+    }).then(res => {
+      console.log('===>res', res);
+    })
+  }, [])
+
   const checkValid = () => {
     const {object, isValid} = validation(form);
     setValid(object)
-    const lastArray = JSON.parse(localStorage.getItem("users"));
 
     if (isValid) {
-
-      registration({
-        inputForEmail: form.emailInput.value,
-        inputForPassword: form.passwordInput.value,
-        name:form.firstNameInput.value,
-        lastName:form.secondNameInput.value,
-      }).then(res => {
-        console.log('===>res', res);
-        // localStorage.setItem('token', res.token)
-      })
-      // if (lastArray && lastArray.length > 0) {
-      //   localStorage.setItem('form', JSON.stringify(form))
-      //   lastArray.push(form);
-      //   localStorage.setItem('users', JSON.stringify(lastArray))
-      // } else {
-      //   localStorage.setItem('users', JSON.stringify([form]))
-      // }
+      setRegisterApi()
     }
   };
 

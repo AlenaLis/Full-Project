@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 
 import human1 from '../../assets/images/human.png';
@@ -6,20 +6,49 @@ import eye from '../../assets/images/eye icon.png';
 import prof from '../../assets/images/prof_photo.png';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './MyArticlePage.scss';
+import {getOneArticle, getProfileInfo} from "../../services";
 
 const MyArticlePage = () => {
 
-  const myArticle = JSON.parse(localStorage.getItem("art"));
-  const myUser = JSON.parse(localStorage.getItem("myUser")) || [];
+  // const myArticle = JSON.parse(localStorage.getItem("art"));
+  // const myUser = JSON.parse(localStorage.getItem("myUser")) || [];
+  const [myInfo, setMyInfo] = useState([])
+console.log('===>myInfo', myInfo);
+  const getProfileApi = useCallback(() => {
+    console.log('===>myInfo', myInfo);
+    getProfileInfo({
+    }, userId).then(res => {
+      setMyInfo(res)
+    })
+  }, [])
+  console.log('===>myInfo', myInfo);
 
-  useEffect(() => {
-    if (!myArticle) {
-      localStorage.setItem('art', JSON.stringify([]))
-    }
+  const [myArticle, setMyArticle] = useState([])
+
+
+  // const [isLogin, setIsLogin] = useState(JSON.parse(localStorage.getItem('isLogin')));
+  const token = localStorage.getItem('token');
+  const userId = localStorage.getItem('userId');
+
+  const myArticles = useCallback(() => {
+    getOneArticle({
+    }, userId).then(res => {
+      setMyArticle(res)
+      console.log('===>res', res);
+    })
   }, [])
 
-  const [isLogin, setIsLogin] = useState(JSON.parse(localStorage.getItem('isLogin')));
 
+  useEffect(() => {
+    getProfileApi()
+  }, [])
+
+  useEffect(() => {
+    myArticles()
+  }, [])
+
+console.log('===>myArticles', myArticle);
+  console.log('===>myInfo', myInfo);
   return (
     <div>
 
@@ -27,7 +56,7 @@ const MyArticlePage = () => {
         ? (
           <div className="inProf__container">
             <div className="prof__cont__photo">
-              {myUser.length > 0
+              {myInfo && myInfo.length > 0
                 ? (
                   <span className="line">
                         <div>
@@ -38,10 +67,10 @@ const MyArticlePage = () => {
                         </div>
                         <div>
                             <h3>
-                              {myUser[0].firstNameInput
+                              {myInfo[0].name
                                 ?
-                                myUser[0].firstNameInput.value + ' ' +
-                                myUser[0].secondNameInput.value
+                                myInfo[0].name + ' ' +
+                                myInfo[0].lastName
                                 :
                                 ''
                               }
@@ -49,9 +78,9 @@ const MyArticlePage = () => {
                         </div>
                         <div>
                             <p>
-                              {myUser[0].descriptionInput
+                              {myInfo[0].description
                                 ?
-                                myUser[0].descriptionInput.value
+                                myInfo[0].description
                                 :
                                 ''
                               }
@@ -88,7 +117,7 @@ const MyArticlePage = () => {
                             />
                           </div>
                         </div>
-                        {myUser?.map((elUser) => (
+                        {myInfo?.map((elUser) => (
                           <div className="main__panel__bottom">
                             <div className="main__panel__bottom__human">
                               <div>
@@ -99,11 +128,11 @@ const MyArticlePage = () => {
                               </div>
                               <div>
                                 <p className="p__human">
-                                  {myUser[0].firstNameInput
+                                  {myInfo[0].name
                                     ?
-                                    myUser[0].firstNameInput.value
+                                    myInfo[0].name
                                     + ' ' +
-                                    myUser[0].secondNameInput.value
+                                    myInfo[0].lastName
                                     :
                                     ''
                                   }
@@ -118,7 +147,7 @@ const MyArticlePage = () => {
                                 <img src={eye}/>
                               </div>
                               <div>
-                                <p className="p__human__second">{el.watches}</p>
+                                <p className="p__human__second">{el.count}</p>
                               </div>
                             </div>
                           </div>
@@ -128,7 +157,7 @@ const MyArticlePage = () => {
                   </div>
                 </div>
               ))}
-              {!isLogin && <Redirect to="/"/>}
+              {!token && <Redirect to="/"/>}
               {!myArticle && <Redirect to="/"/>}
             </div>
           </div>
@@ -145,11 +174,11 @@ const MyArticlePage = () => {
                         </div>
                         <div>
                             <h3>
-                              {myUser[0].firstNameInput
+                              {myInfo[0].name
                                 ?
-                                myUser[0].firstNameInput.value
+                                myInfo[0].name
                                 + ' ' +
-                                myUser[0].secondNameInput.value
+                                myInfo[0].lastName
                                 :
                                 ''
                               }
@@ -157,9 +186,9 @@ const MyArticlePage = () => {
                         </div>
                         <div>
                             <p>
-                              {myUser[0].descriptionInput
+                              {myInfo[0].description
                                 ?
-                                myUser[0].descriptionInput.value
+                                myInfo[0].description
                                 :
                                 ''
                               }
@@ -174,7 +203,7 @@ const MyArticlePage = () => {
           </div>
         </div>
       }
-      {!isLogin && <Redirect to="/"/>}
+      {!token && <Redirect to="/"/>}
     </div>
   );
 }

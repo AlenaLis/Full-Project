@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Redirect} from 'react-router-dom';
 
 import prof from '../../assets/images/prof_photo.png';
 import './ProfileInfo.scss';
+import {changeProfileInfo, getProfileInfo} from "../../services";
 
 const ProfileInfo = () => {
 
@@ -29,7 +30,15 @@ const ProfileInfo = () => {
     },
   });
 
-  const [isLogin, setIsLogin] = useState(JSON.parse(localStorage.getItem('isLogin')));
+  const userId = localStorage.getItem('userId')
+  const [myInfo, setMyInfo] = useState([])
+
+  const getProfileApi = useCallback(() => {
+    getProfileInfo({
+    }, userId).then(res => {
+      setMyInfo(res)
+    })
+  }, [])
 
   const handleChange = (e, key) => {
     const {value, type} = e.target
@@ -42,23 +51,34 @@ const ProfileInfo = () => {
     }))
   };
 
-  let myUserInfo = JSON.parse(localStorage.getItem("myUser")) || [];
+  useEffect(() => {
+    getProfileApi()
+  }, [])
+
+  const newProfileApi = useCallback(() => {
+    changeProfileInfo({
+      name: local.firstNameInput.value,
+      lastName: local.secondNameInput.value,
+      description: local.descriptionInput.value,
+    }, userId).then(res => {
+      console.log('===>res', res);
+    })
+  }, [local])
+
+  const addNewInfo = () => {
+    newProfileApi()
+  };
 
   useEffect(() => {
-    if (myUserInfo.length > 0) {
-      setLocal(myUserInfo[0])
+    if (myInfo[0]) {
+      setMyInfo(myInfo[0])
     }
   }, [])
 
-  const addNewInfo = () => {
+console.log('===>local', local);
+console.log('===>Myinfo', myInfo[0]);
 
-    if (myUserInfo && myUserInfo.length > 0) {
-      localStorage.setItem('myUser', JSON.stringify([local]))
-    } else {
-      localStorage.setItem('myUser', JSON.stringify(myUserInfo))
-    }
-
-  };
+  const token = localStorage.getItem('token');
 
   return (
     <div>
@@ -66,7 +86,7 @@ const ProfileInfo = () => {
         <div>
           <h2 className="h2__text"> Profile </h2>
         </div>
-        {myUserInfo.length > 0 ?
+        {myInfo.length > 0 ?
           <div className="prof__cont">
             <div className="prof__cont__photo">
             <span className="line">
@@ -95,14 +115,9 @@ const ProfileInfo = () => {
                         (e) => {
                           handleChange(e, 'firstNameInput')
                         }}
-                      value=
-                        {local.firstNameInput ?
-                          local.firstNameInput.value
-                          :
-                          ''
-                        }
-                      placeholder={myUserInfo[0].firstNameInput ?
-                        myUserInfo[0].firstNameInput.value
+                      value={local.firstNameInput.value}
+                      placeholder={myInfo[0].name ?
+                        myInfo[0].name
                         :
                         ''
                       }
@@ -118,14 +133,10 @@ const ProfileInfo = () => {
                           handleChange(e, 'secondNameInput')
                         }}
                       value=
-                        {local.secondNameInput ?
-                          local.secondNameInput.value
-                          :
-                          ''
-                        }
+                        {local.secondNameInput.value}
                       placeholder=
-                        {myUserInfo[0].secondNameInput.value ?
-                          myUserInfo[0].secondNameInput.value
+                        {myInfo[0].lastName ?
+                          myInfo[0].lastName
                           :
                           ''
                         }
@@ -138,14 +149,10 @@ const ProfileInfo = () => {
                   <p>Description</p>
                   <td align="right" valign="top">
                     <input
-                      value={local.descriptionInput
+                      value={local.descriptionInput.value}
+                      placeholder={myInfo[0].description
                         ?
-                        local.descriptionInput.value
-                        :
-                        ''}
-                      placeholder={myUserInfo[0].descriptionInput
-                        ?
-                        myUserInfo[0].descriptionInput.value
+                        myInfo[0].description
                         :
                         'Please enter your description'}
                       onChange={
@@ -172,7 +179,7 @@ const ProfileInfo = () => {
           <div/>
         }
       </div>
-      {!isLogin && <Redirect to="/"/>}
+      {!token && <Redirect to="/"/>}
     </div>
   );
 }

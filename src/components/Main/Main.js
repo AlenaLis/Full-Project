@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 
 import mainhuman from '../../assets/images/human.png';
@@ -7,14 +7,14 @@ import eye from '../../assets/images/eye icon.png';
 import art from '../../assets/images/art4.png';
 import question from '../../assets/images/question.png';
 import './Main.scss';
+import {getAllArticles} from "../../services";
 
 const Main = () => {
 
   let [startIndex, setStartIndex] = useState(0);
   let [endIndex, setEndIndex] = useState(6);
+  const [myArticle, setMyArticle] = useState([])
 
-  const myArticle = JSON.parse(localStorage.getItem("art")) || [];
-  const myUser = JSON.parse(localStorage.getItem("myUser")) || [];
   const newArray = myArticle?.slice(startIndex, endIndex);
   let mainArticle = JSON.parse(localStorage.getItem("art"));
 
@@ -24,6 +24,16 @@ const Main = () => {
       setEndIndex(endIndex - 6);
     }
   };
+
+  const getAllArticle = useCallback(() => {
+    getAllArticles().then((res) => {
+      setMyArticle(res)
+    })
+  }, [])
+
+  useEffect(() => {
+    getAllArticle()
+  }, [])
 
   const goToNextPage = () => {
     if (myArticle.length > 6) {
@@ -41,7 +51,7 @@ const Main = () => {
   if (myArticle.length > 1) {
     for (let i = 0; i < myArticle.length - 1; i++) {
 
-      if (myArticle[i].watches > myArticle[i + 1].watches) {
+      if (myArticle[i].count > myArticle[i + 1].count) {
         mainArticle = myArticle[i];
       } else {
         mainArticle = myArticle[i + 1];
@@ -53,7 +63,8 @@ const Main = () => {
 
   return (
     <div>
-      {(myArticle.length > 0) && (myUser.length > 0) ?
+      {/*{(myArticle.length > 0) && (myUser.length > 0) ?*/}
+      {(myArticle.length > 0) ?
         <div className="main">
           <div className="main__top">
             <div>
@@ -93,15 +104,15 @@ const Main = () => {
                   </div>
                   <div>
                     <p className="p__human">
-                      {myUser.length > 0
-                      &&
-                      (myUser[0].firstNameInput
-                        ?
-                        myUser[0].firstNameInput.value + ' ' +
-                        myUser[0].secondNameInput.value
-                        :
-                        '')
-                      }
+                      {/*{myUser.length > 0*/}
+                      {/*&&*/}
+                      {/*(myUser[0].firstNameInput*/}
+                      {/*  ?*/}
+                      {/*  myUser[0].firstNameInput.value + ' ' +*/}
+                      {/*  myUser[0].secondNameInput.value*/}
+                      {/*  :*/}
+                      {/*  '')*/}
+                      {/*}*/}
                     </p>
                   </div>
                 </div>
@@ -117,7 +128,7 @@ const Main = () => {
                   </div>
                   <div>
                     <p className="p__human__second">
-                      {mainArticle?.watches}
+                      {mainArticle?.count}
                     </p>
                   </div>
                 </div>
@@ -145,7 +156,7 @@ const Main = () => {
                     <div>
                       <h2 className="h2__text">
                         <Link
-                          to={`/fullart/${el.id}/`}
+                          to={`/fullart/${el._id}/`}
                           path="/fullart/:id/"
                         >
                           {el.title}
@@ -153,7 +164,7 @@ const Main = () => {
                       </h2>
                       <p className="p__text">
                         <div
-                          dangerouslySetInnerHTML={{__html: el.titleForShow}}
+                          dangerouslySetInnerHTML={{__html: el.textArt}}
                           className="p__text"
                         />
                       </p>
@@ -165,13 +176,13 @@ const Main = () => {
                         </div>
                         <div>
                           <p className="p__human">
-                            {myUser[0].firstNameInput
-                              ?
-                              myUser[0].firstNameInput.value + ' ' +
-                              myUser[0].secondNameInput.value
-                              :
-                              ''
-                            }
+                            {/*{myUser[0].firstNameInput*/}
+                            {/*  ?*/}
+                            {/*  myUser[0].firstNameInput.value + ' ' +*/}
+                            {/*  myUser[0].secondNameInput.value*/}
+                            {/*  :*/}
+                            {/*  ''*/}
+                            {/*}*/}
                           </p>
                         </div>
                       </div>
@@ -189,7 +200,7 @@ const Main = () => {
                         </div>
                         <div>
                           <p className="p__human__second">
-                            {el.watches}
+                            {el.count}
                           </p>
                         </div>
                       </div>

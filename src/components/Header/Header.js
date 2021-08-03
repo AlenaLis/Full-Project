@@ -5,13 +5,11 @@ import logo from '../../assets/images/Logo.png';
 import "./Header.scss"
 
 const Header = () => {
-
-  const [isLogin, setIsLogin] = useState(JSON.parse(localStorage.getItem('isLogin')));
+  const token = localStorage.getItem('token');
 
   const islogout = () => {
-    localStorage.setItem('isLogin', JSON.stringify(false))
-    setIsLogin(JSON.parse(localStorage.getItem('isLogin')))
-    localStorage.setItem('myUser', JSON.stringify([]))
+    localStorage.setItem('token', JSON.stringify([]))
+    localStorage.removeItem('token', JSON.stringify([]))
     window.location.reload();
   };
 
@@ -27,7 +25,7 @@ const Header = () => {
               />
             </Link>
             <div>
-              {isLogin
+              {token && token.length > 0
                 ? (<div className="link">
                     <p>
                       <Link to='/'>All articles</Link>
