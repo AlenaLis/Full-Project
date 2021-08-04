@@ -85,6 +85,16 @@
       border: 1px solid #242424;
       margin-bottom: 110px;
       margin-top: 48px;
+      .text {
+        //position: absolute;
+        //right: 200px;
+        //bottom:73px;
+      }
+    }
+    .addPicture {
+      opacity: 0;
+      width: 188px;
+      height: 48px;
     }
   }
 

@@ -8,6 +8,7 @@ import draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './AddArt.scss';
 import {addOneArticle, login, registration} from "../../services";
+import axios from "axios";
 
 const AddArt = () => {
 
@@ -23,10 +24,13 @@ const AddArt = () => {
     image: '',
   });
 
+
   const token = localStorage.getItem('token');
 
   let newDate = dataForm.date;
   newDate = new Date().toLocaleDateString();
+
+  let newImage = String(dataForm.image)
 
   const changeDataInput = (e, key) => {
 
@@ -36,9 +40,8 @@ const AddArt = () => {
         ...prevState,
         [key]: e,
         titleForShow: dataText,
-        data2: newDate,
+        date2: newDate,
         id: Date.now(),
-        image: '',
       }))
     } else {
       const {value} = e.target
@@ -46,26 +49,36 @@ const AddArt = () => {
         ...prevState,
         [key]: value,
         titleForShow: dataText,
-        data2: newDate,
+        date2: newDate,
         id: Date.now(),
-        image: '',
       }))
     }
   }
-  console.log('===>datewfeewfaForm.title', dataForm.title);
+
+  const imageOnChange = (e) => {
+    const file = e.target.files[0];
+    // saveAs(new Blob(e.target.files[0], {type}),'test');
+    // console.log('===>new Blob(file)', new Blob(file, {type: 'text/plain'}));
+    setDataForm((prevState) => ({
+      ...prevState,
+      // image: file,
+      image: URL.createObjectURL(file),
+    }))
+  }
 
   const setArt =  useCallback( () => {
+    console.log('===>dataForm.image', dataForm.image);
     addOneArticle({
       title: dataForm.title,
       category: dataForm.category,
       textArt: dataForm.titleForShow,
-      // image: dataForm.image,
-      // user: dataForm.idUser,
-      // _id: dataForm.idArt
+      data: dataForm.date2,
+      imageSrc: dataForm.image,
     }).then(res => {
       console.log('===>article', res);
     })
   }, [dataForm])
+
 
   // useEffect(() => {
   //   addOneArticle()
@@ -73,10 +86,21 @@ const AddArt = () => {
   const  createNewArt = () => {
     console.log('===>dataForm', dataForm);
     setArt()
+    console.log('===>dataForm FIELELELLE', dataForm.image);
   }
 
+  const  addPicture = () => {
+
+
+  }
+  // console.log('===>dataForm FIELELELLE',(String(dataForm.image)));
+  // console.log('===>dataForm IMAGEEEE', dataForm.image);
   return (
     <div>
+      {dataForm.image && <img style={
+        {width: '500px',
+        height: '500px'
+        }} src={dataForm.image} alt=""/>}
       <div className='addArt__content'>
         <div>
           <h2 className="h2__text"> Add article </h2>
@@ -127,9 +151,23 @@ const AddArt = () => {
 
           <button
             className='button__create_image'
-            onClick={createNewArt}
+            onClick={addPicture}
           >
-            Publish an article
+            <span className="text">
+               Add a picture
+            </span>
+            <input
+              className="addPicture"
+              type="file"
+              accept=".png, .jpg"
+              src="/uploads"
+              onChange={(e) => {
+                imageOnChange(e)
+              }}
+            />
+          </button>
+          <button type="submit" className="button">
+            Submit
           </button>
         </div>
       </div>

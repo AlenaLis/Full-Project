@@ -12,8 +12,10 @@ const MyArticlePage = () => {
 
   // const myArticle = JSON.parse(localStorage.getItem("art"));
   // const myUser = JSON.parse(localStorage.getItem("myUser")) || [];
+
   const [myInfo, setMyInfo] = useState([])
 console.log('===>myInfo', myInfo);
+
   const getProfileApi = useCallback(() => {
     console.log('===>myInfo', myInfo);
     getProfileInfo({
@@ -42,6 +44,7 @@ console.log('===>myInfo', myInfo);
   useEffect(() => {
     getProfileApi()
   }, [])
+
 
   useEffect(() => {
     myArticles()
@@ -72,7 +75,7 @@ console.log('===>myArticles', myArticle);
                                 myInfo[0].name + ' ' +
                                 myInfo[0].lastName
                                 :
-                                ''
+                                ' '
                               }
                             </h3>
                         </div>
@@ -104,7 +107,7 @@ console.log('===>myArticles', myArticle);
                         <div>
                           <h2 className="h2__text">
                             <Link
-                              to={`/fullart/${el.id}/`}
+                              to={`/fullart/${el._id}/`}
                               path="/fullart/:id/"
                             >
                               {el.title}
@@ -140,7 +143,7 @@ console.log('===>myArticles', myArticle);
                               </div>
                             </div>
                             <div>
-                              <p className="p__human__second">{myArticle[0].data2}</p>
+                              <p className="p__human__second">{el.data}</p>
                             </div>
                             <div className="main__panel__bottom__human__second">
                               <div>
@@ -174,24 +177,24 @@ console.log('===>myArticles', myArticle);
                         </div>
                         <div>
                             <h3>
-                              {myInfo[0].name
-                                ?
-                                myInfo[0].name
-                                + ' ' +
-                                myInfo[0].lastName
-                                :
-                                ''
-                              }
+                              {/*{myInfo[0].name*/}
+                              {/*  ?*/}
+                              {/*  myInfo[0].name*/}
+                              {/*  + ' ' +*/}
+                              {/*  myInfo[0].lastName*/}
+                              {/*  :*/}
+                              {/*  ''*/}
+                              {/*}*/}
                             </h3>
                         </div>
                         <div>
                             <p>
-                              {myInfo[0].description
-                                ?
-                                myInfo[0].description
-                                :
-                                ''
-                              }
+                              {/*{myInfo[0].description*/}
+                              {/*  ?*/}
+                              {/*  myInfo[0].description*/}
+                              {/*  :*/}
+                              {/*  ''*/}
+                              {/*}*/}
                             </p>
                         </div>
                     </span>

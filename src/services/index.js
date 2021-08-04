@@ -55,8 +55,16 @@ export const getOneArticle = (data, id) => {
   }).then(data => data.data)
 };
 
+export const getOneArticleById = (id) => {
+  const url = `${urls.CATEGORY}/article/${id}`;
+  return ajaxWrapper({
+    method: 'GET',
+    url,
+  }).then(data => data.data)
+};
+
 export const countWatches = (id) => {
-  const url = `${urls.ARTICLE}/${id}`;
+  const url = `${urls.CATEGORY}/article/${id}`;
   return ajaxWrapper({
     method: 'PATCH',
     url,

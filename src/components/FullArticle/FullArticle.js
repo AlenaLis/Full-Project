@@ -1,64 +1,36 @@
-import {Link, useParams} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import React, {useCallback, useEffect, useState} from 'react';
+import {countWatches, getOneArticleById} from "../../services";
 
 import img_human from '../../assets/images/human.png';
 import eye from '../../assets/images/eye icon.png';
 import './FullArticle.scss';
-import {getAllArticles, getOneArticle, getProfileInfo} from "../../services";
 
 const FullArticle = () => {
 
-  // let {id} = useParams();
+  let currentLocation = window.location;
+  let newPath = currentLocation.pathname
+  const newParam = newPath.slice(9, 33);
 
-  // const myArticle = JSON.parse(localStorage.getItem("art"));
-  // const oneArt = myArticle?.filter((myArticle => myArticle.id === +id))[0];
-  // const user = JSON.parse(localStorage.getItem("myUser"));
+  const [myArticle, setMyArticle] = useState([]);
 
+  const countWatch = useCallback(async () => {
+    await countWatches(newParam)
+  }, [newParam])
 
-
-  const [myArticle, setMyArticle] = useState([])
-
-  const getOneArticle = useCallback(() => {
-    getOneArticle().then((res) => {
-      console.log('===>res', res);
-      setMyArticle(res)
-    })
-  }, [])
-
-  const userId = localStorage.getItem('userId')
-  const [myInfo, setMyInfo] = useState([])
-
-  const getProfileApi = useCallback(() => {
-    getProfileInfo({
-    }, userId).then(res => {
-      setMyInfo(res)
-    })
-  }, [])
-  // const getAllArticle = useCallback(() => {
-  //   getAllArticles().then((res) => {
-  //     console.log('===>res', res);
-  //     setMyArticle(res)
-  //   })
-  // }, [])
-  // useEffect(() => {
-  //   getAllArticle()
-  // }, [])
-  useEffect(() => {
-    getOneArticle()
-  }, [])
+  const refreshMyArt = useCallback(async () => {
+    await getOneArticleById(newParam)
+      .then(res => {
+        setMyArticle(res)
+      })
+  }, [newParam])
 
   useEffect(() => {
-    if (!myArticle) {
-      localStorage.setItem('art', JSON.stringify([]))
-    }
-  }, [])
-  // useEffect(() => {
-  //   if (!myArticle) {
-  //     localStorage.setItem('art', JSON.stringify([]))
-  //   }
-  // }, [])
-  // const oneArt = myArticle?.filter((myArticle => myArticle._id ))[0];
-  // console.log('===>oneArt', oneArt);
+    countWatch().then(res => {
+      refreshMyArt()
+    })
+  }, [countWatch, refreshMyArt])
+
   return (
     <div>
       <div className="Art__container">
@@ -70,16 +42,16 @@ const FullArticle = () => {
             <div className="main__bottom__art">
               <div className="main__bottom__new">
                 <div>
-                  {/*<button>{oneArt?.category}</button>*/}
+                  <button>{myArticle[0]?.category}</button>
                 </div>
                 <h2 className="h2__text">
-                  {/*{oneArt?.title}*/}
+                  {myArticle[0]?.title}
                 </h2>
                 <div className="main__panel__bottom__art">
                   <div>
                     <p className="p__text">
                       <div
-                        // dangerouslySetInnerHTML={{__html: oneArt.titleForShow}}
+                        dangerouslySetInnerHTML={{__html: myArticle[0]?.textArt}}
                         className="p__text"
                       />
                     </p>
@@ -97,27 +69,25 @@ const FullArticle = () => {
                         </div>
                         <div>
                           <p className="p__human">
-                            {/*{user[0].firstName*/}
-                            {/*  ?*/}
-                            {/*  user[0].firstName.value*/}
-                            {/*  + ' ' +*/}
-                            {/*  user[0].secondName.value*/}
-                            {/*  :*/}
-                            {/*  user[0].firstNameInput.value*/}
-                            {/*  + ' ' +*/}
-                            {/*  user[0].secondNameInput.value}*/}
+                            {myArticle[0]?.user
+                              ?
+                              myArticle[0].user.name
+                              + ' ' +
+                              myArticle[0].user.lastName
+                              :
+                              ''}
                           </p>
                         </div>
                       </div>
                       <div>
-                        {/*<p className="p__human__second">{oneArt?.data2}</p>*/}
+                        <p className="p__human__second">{myArticle[0]?.data}</p>
                       </div>
                       <div className="main__panel__bottom__human__second">
                         <div>
                           <img src={eye}/>
                         </div>
                         <div>
-                          {/*<p className="p__human__second">{oneArt?.count}</p>*/}
+                          <p className="p__human__second">{myArticle[0]?.count}</p>
                         </div>
                       </div>
                     </div>

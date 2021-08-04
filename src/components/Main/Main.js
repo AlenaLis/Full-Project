@@ -16,7 +16,7 @@ const Main = () => {
   const [myArticle, setMyArticle] = useState([])
 
   const newArray = myArticle?.slice(startIndex, endIndex);
-  let mainArticle = JSON.parse(localStorage.getItem("art"));
+
 
   const goToPreviousPage = () => {
     if (startIndex !== 0) {
@@ -42,19 +42,14 @@ const Main = () => {
     }
   };
 
-  useEffect(() => {
-    if (!myArticle) {
-      localStorage.setItem('art', JSON.stringify([]))
-    }
-  }, [])
+let mainArticle = myArticle[0];
 
   if (myArticle.length > 1) {
-    for (let i = 0; i < myArticle.length - 1; i++) {
+    for (let i = 0; i < myArticle.length; i++) {
 
-      if (myArticle[i].count > myArticle[i + 1].count) {
+      if (mainArticle.count < myArticle[i].count) {
         mainArticle = myArticle[i];
       } else {
-        mainArticle = myArticle[i + 1];
       }
     }
   } else {
@@ -81,7 +76,7 @@ const Main = () => {
               <div>
                 <h2 className="h2__text">
                   <Link
-                    to={`/fullart/${mainArticle?.id}/`}
+                    to={`/fullart/${mainArticle?._id}/`}
                     path="/fullart/:id/"
                   >
                     {mainArticle?.title}
@@ -89,7 +84,7 @@ const Main = () => {
                 </h2>
                 <p className="p__text">
                   <div
-                    dangerouslySetInnerHTML={{__html: mainArticle?.titleForShow}}
+                    dangerouslySetInnerHTML={{__html: mainArticle?.textArt}}
                     className="p__text"
                   />
                 </p>
@@ -104,20 +99,20 @@ const Main = () => {
                   </div>
                   <div>
                     <p className="p__human">
-                      {/*{myUser.length > 0*/}
-                      {/*&&*/}
-                      {/*(myUser[0].firstNameInput*/}
-                      {/*  ?*/}
-                      {/*  myUser[0].firstNameInput.value + ' ' +*/}
-                      {/*  myUser[0].secondNameInput.value*/}
-                      {/*  :*/}
-                      {/*  '')*/}
-                      {/*}*/}
+                      {mainArticle?.user
+                        ?
+                        (
+                        mainArticle.user.name + ' ' +
+                        mainArticle.user.lastName
+                        )
+                        :
+                        ''
+                      }
                     </p>
                   </div>
                 </div>
                 <div>
-                  <p className="p__human__second">{mainArticle?.data2}</p>
+                  <p className="p__human__second">{mainArticle?.data}</p>
                 </div>
                 <div className="main__panel__bottom__human__second">
                   <div>
@@ -144,7 +139,7 @@ const Main = () => {
                 <div className="main__bottom__new">
                   <div>
                     <img
-                      src={question}
+                      src={el.imageSrc || question}
                       alt='Image from the most popular art'
                       className='second__arts'
                     />
@@ -176,19 +171,19 @@ const Main = () => {
                         </div>
                         <div>
                           <p className="p__human">
-                            {/*{myUser[0].firstNameInput*/}
-                            {/*  ?*/}
-                            {/*  myUser[0].firstNameInput.value + ' ' +*/}
-                            {/*  myUser[0].secondNameInput.value*/}
-                            {/*  :*/}
-                            {/*  ''*/}
-                            {/*}*/}
+                            {el.user
+                              ?
+                              el.user.name + ' ' +
+                              el.user.lastName
+                              :
+                              ''
+                            }
                           </p>
                         </div>
                       </div>
                       <div>
                         <p className="p__human__second">
-                          {el.data2}
+                          {el.data}
                         </p>
                       </div>
                       <div className="main__panel__bottom__human__second">
