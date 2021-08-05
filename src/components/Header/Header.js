@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Link} from 'react-router-dom';
 
 import logo from '../../assets/images/Logo.png';
 import "./Header.scss"
 
 const Header = () => {
+
   const token = localStorage.getItem('token');
 
   const islogout = () => {

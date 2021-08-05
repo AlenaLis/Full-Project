@@ -1,3 +1,27 @@
+@media screen and (max-width: 1070px) {
+
+  .addArt__content {
+
+    .h2__text {
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      align-items: center;
+    }
+  }
+  .editor {
+    display: flex;
+    align-content: center;
+    align-items: center;
+
+    .toolbarClassName {
+      display: flex;
+      align-content: center;
+      align-items: center;
+    }
+  }
+}
+
 .addArt__content {
   display: flex;
   justify-content: space-between;
@@ -85,12 +109,15 @@
       border: 1px solid #242424;
       margin-bottom: 110px;
       margin-top: 48px;
-      .text {
-        //position: absolute;
-        //right: 200px;
-        //bottom:73px;
+
+      p {
+        margin: 0;
+        position: absolute;
+        margin-left: 40px;
+        margin-top: 15px;
       }
     }
+
     .addPicture {
       opacity: 0;
       width: 188px;

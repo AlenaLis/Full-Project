@@ -6,12 +6,8 @@ import {routes} from "./routes/routes";
 import './App.scss';
 
 const App = () => {
-  const [isAuth, setIsAuth] = useState(false)
-  const [isLogin, setIsLogin] = useState(JSON.parse(localStorage.getItem('isLogin')));
 
-  if (!isLogin) {
-    localStorage.setItem('isLogin', JSON.stringify(false));
-  }
+  const [isAuth, setIsAuth] = useState(false)
 
   const changeIsAuth = () => {
     setIsAuth(!isAuth)

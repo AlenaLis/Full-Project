@@ -1,60 +1,45 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Link, Redirect} from 'react-router-dom';
+import {getOneArticle, getProfileInfo} from "../../services";
 
+import question from "../../assets/images/question.png";
 import human1 from '../../assets/images/human.png';
 import eye from '../../assets/images/eye icon.png';
 import prof from '../../assets/images/prof_photo.png';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './MyArticlePage.scss';
-import {getOneArticle, getProfileInfo} from "../../services";
+
 
 const MyArticlePage = () => {
 
-  // const myArticle = JSON.parse(localStorage.getItem("art"));
-  // const myUser = JSON.parse(localStorage.getItem("myUser")) || [];
-
   const [myInfo, setMyInfo] = useState([])
-console.log('===>myInfo', myInfo);
-
-  const getProfileApi = useCallback(() => {
-    console.log('===>myInfo', myInfo);
-    getProfileInfo({
-    }, userId).then(res => {
-      setMyInfo(res)
-    })
-  }, [])
-  console.log('===>myInfo', myInfo);
-
   const [myArticle, setMyArticle] = useState([])
 
-
-  // const [isLogin, setIsLogin] = useState(JSON.parse(localStorage.getItem('isLogin')));
   const token = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
 
-  const myArticles = useCallback(() => {
-    getOneArticle({
-    }, userId).then(res => {
-      setMyArticle(res)
-      console.log('===>res', res);
+  const getProfileApi = useCallback(() => {
+    getProfileInfo({}, userId).then(res => {
+      setMyInfo(res)
     })
   }, [])
 
+  const myArticles = useCallback(() => {
+    getOneArticle({}, userId).then(res => {
+      setMyArticle(res)
+    })
+  }, [])
 
   useEffect(() => {
     getProfileApi()
   }, [])
 
-
   useEffect(() => {
     myArticles()
   }, [])
 
-console.log('===>myArticles', myArticle);
-  console.log('===>myInfo', myInfo);
   return (
     <div>
-
       {myArticle && myArticle.length > 0
         ? (
           <div className="inProf__container">
@@ -64,8 +49,9 @@ console.log('===>myArticles', myArticle);
                   <span className="line">
                         <div>
                             <img
-                              src={prof}
+                              src={myInfo[0].imageSrc?.dataUrl || prof}
                               alt='User photo'
+                              className="main__user_photo"
                             />
                         </div>
                         <div>
@@ -100,6 +86,13 @@ console.log('===>myArticles', myArticle);
                 <div className="prof__cont__art">
                   <div className="main__bottom__art">
                     <div className="main__bottom__new">
+                      <div>
+                        <img
+                          src={el.imageSrc.dataUrl || question}
+                          alt='Image from the art'
+                          className='second__arts'
+                        />
+                      </div>
                       <div className="main__panel__bottom__art">
                         <div>
                           <button>{el.category}</button>
@@ -115,7 +108,7 @@ console.log('===>myArticles', myArticle);
                           </h2>
                           <div>
                             <div
-                              dangerouslySetInnerHTML={{__html: el.titleForShow}}
+                              dangerouslySetInnerHTML={{__html: el.textArt}}
                               className="p__text"
                             />
                           </div>
@@ -125,17 +118,18 @@ console.log('===>myArticles', myArticle);
                             <div className="main__panel__bottom__human">
                               <div>
                                 <img
-                                  src={human1}
+                                  src={elUser.imageSrc?.dataUrl || human1}
                                   alt='profile photo'
+                                  className="user_photo"
                                 />
                               </div>
                               <div>
                                 <p className="p__human">
-                                  {myInfo[0].name
+                                  {elUser.name
                                     ?
-                                    myInfo[0].name
+                                    elUser.name
                                     + ' ' +
-                                    myInfo[0].lastName
+                                    elUser.lastName
                                     :
                                     ''
                                   }
@@ -161,7 +155,6 @@ console.log('===>myArticles', myArticle);
                 </div>
               ))}
               {!token && <Redirect to="/"/>}
-              {!myArticle && <Redirect to="/"/>}
             </div>
           </div>
         )
@@ -171,30 +164,31 @@ console.log('===>myArticles', myArticle);
               <span className="line">
                         <div>
                             <img
-                              src={prof}
+                              src={myInfo[0]?.imageSrc?.dataUrl || prof}
                               alt='User photo'
+                              className="user_photo"
                             />
                         </div>
                         <div>
                             <h3>
-                              {/*{myInfo[0].name*/}
-                              {/*  ?*/}
-                              {/*  myInfo[0].name*/}
-                              {/*  + ' ' +*/}
-                              {/*  myInfo[0].lastName*/}
-                              {/*  :*/}
-                              {/*  ''*/}
-                              {/*}*/}
+                              {myInfo[0]
+                                ?
+                                myInfo[0].name
+                                + ' ' +
+                                myInfo[0].lastName
+                                :
+                                ''
+                              }
                             </h3>
                         </div>
                         <div>
                             <p>
-                              {/*{myInfo[0].description*/}
-                              {/*  ?*/}
-                              {/*  myInfo[0].description*/}
-                              {/*  :*/}
-                              {/*  ''*/}
-                              {/*}*/}
+                              {myInfo[0]?.description
+                                ?
+                                myInfo[0].description
+                                :
+                                ''
+                              }
                             </p>
                         </div>
                     </span>

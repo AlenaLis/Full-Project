@@ -1,4 +1,4 @@
-import { ajaxWrapper } from '../helpers/ajaxWrapper';
+import {ajaxWrapper} from '../helpers/ajaxWrapper';
 
 import {urls} from '../helpers/constant';
 
@@ -72,7 +72,6 @@ export const countWatches = (id) => {
 };
 
 export const addOneArticle = (data) => {
-  console.log('===>data', data);
   const url = `${urls.CATEGORY}`;
   return ajaxWrapper({
     method: 'POST',
@@ -80,22 +79,3 @@ export const addOneArticle = (data) => {
     data
   }).then(data => data.data)
 };
-
-// export const checkOut = (data) => {
-//   const url = `${urls.CART}`;
-//   return ajaxWrapper({
-//     method: 'DELETE',
-//     url,
-//   }).then(data => data.data)
-// };
-//
-// export const deleteOne = (id, total) => {
-//   const url = `${urls.CART}/${id}`;
-//   return ajaxWrapper({
-//     method: 'DELETE',
-//     url,
-//     data: {productId: id, total}
-//   }).then(data => data.data)
-// };
-
-

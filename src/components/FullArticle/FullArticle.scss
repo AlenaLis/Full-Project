@@ -1,3 +1,19 @@
+@media screen and (max-width: 1070px) {
+  .Art__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .main__bottom__new {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+
 .Art__container {
   display: flex;
   justify-content: space-between;
@@ -28,8 +44,9 @@
         .main__bottom__new {
 
           .art {
-            width: 676px;
-            height: 399px;
+            object-fit: contain;
+            max-width: 676px;
+            max-height: 399px;
           }
 
           button {
@@ -133,6 +150,12 @@
                   align-content: space-between;
                   align-items: center;
                   height: 70px;
+
+                  .user__photo {
+                    border-radius: 100px;
+                    width: 40px;
+                    height: 40px;
+                  }
 
                   .p__human {
                     margin-left: 8px;

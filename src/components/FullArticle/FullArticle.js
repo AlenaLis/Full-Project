@@ -5,14 +5,15 @@ import {countWatches, getOneArticleById} from "../../services";
 import img_human from '../../assets/images/human.png';
 import eye from '../../assets/images/eye icon.png';
 import './FullArticle.scss';
+import question from "../../assets/images/question.png";
 
 const FullArticle = () => {
+
+  const [myArticle, setMyArticle] = useState([]);
 
   let currentLocation = window.location;
   let newPath = currentLocation.pathname
   const newParam = newPath.slice(9, 33);
-
-  const [myArticle, setMyArticle] = useState([]);
 
   const countWatch = useCallback(async () => {
     await countWatches(newParam)
@@ -44,6 +45,11 @@ const FullArticle = () => {
                 <div>
                   <button>{myArticle[0]?.category}</button>
                 </div>
+                <img
+                  src={myArticle[0]?.imageSrc.dataUrl || question}
+                  alt='Image from the art'
+                  className='art'
+                />
                 <h2 className="h2__text">
                   {myArticle[0]?.title}
                 </h2>
@@ -63,8 +69,9 @@ const FullArticle = () => {
                       <div className="main__panel__bottom__human">
                         <div>
                           <img
-                            src={img_human}
+                            src={myArticle[0]?.user.imageSrc?.dataUrl || img_human}
                             alt='User photo'
+                            className="user__photo"
                           />
                         </div>
                         <div>

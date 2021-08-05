@@ -1,9 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
+import {changeProfileInfo, getProfileInfo} from "../../services";
 import {Redirect} from 'react-router-dom';
 
 import prof from '../../assets/images/prof_photo.png';
 import './ProfileInfo.scss';
-import {changeProfileInfo, getProfileInfo} from "../../services";
+import question from "../../assets/images/question.png";
 
 const ProfileInfo = () => {
 
@@ -30,12 +31,14 @@ const ProfileInfo = () => {
     },
   });
 
-  const userId = localStorage.getItem('userId')
+  const [photo, setMyPhoto] = useState()
   const [myInfo, setMyInfo] = useState([])
 
+  const userId = localStorage.getItem('userId')
+  const token = localStorage.getItem('token');
+
   const getProfileApi = useCallback(() => {
-    getProfileInfo({
-    }, userId).then(res => {
+    getProfileInfo({}, userId).then(res => {
       setMyInfo(res)
     })
   }, [])
@@ -60,10 +63,13 @@ const ProfileInfo = () => {
       name: local.firstNameInput.value,
       lastName: local.secondNameInput.value,
       description: local.descriptionInput.value,
+      imageSrc: {
+        dataUrl: photo,
+        format: 'png'
+      }
     }, userId).then(res => {
-      console.log('===>res', res);
     })
-  }, [local])
+  }, [local, photo])
 
   const addNewInfo = () => {
     newProfileApi()
@@ -75,11 +81,17 @@ const ProfileInfo = () => {
     }
   }, [])
 
-console.log('===>local', local);
-console.log('===>Myinfo', myInfo[0]);
-
-  const token = localStorage.getItem('token');
-
+  const uploadImagesWithComp = async (e) => {
+    const imageDataUrl = await readFile(e);
+    setMyPhoto(imageDataUrl);
+  };
+  const readFile = (image) =>
+    new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => resolve(reader.result), false);
+      reader.readAsDataURL(image);
+    });
+console.log('===>myInfo', myInfo[0]);
   return (
     <div>
       <div className="prof__content">
@@ -92,16 +104,26 @@ console.log('===>Myinfo', myInfo[0]);
             <span className="line">
               <div>
                 <img
-                  src={prof}
-                  alt={'Profile user photo'}/>
+                  src={myInfo[0].imageSrc?.dataUrl || prof}
+                  alt={'Profile user photo'}
+                  className="user__photo"
+                />
               </div>
               <div>
                 <button className='photo'>
-                  Change photo
+                  <p> Change photo </p>
+                  <input
+                    className="addPicture"
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    onChange={(e) => {
+                      uploadImagesWithComp(e.target.files[0])
+                    }}
+                  />
                 </button>
               </div>
               <div>
-                <p>Delete photo</p>
+                <p className="delete">Delete photo</p>
               </div>
             </span>
             </div>
@@ -148,7 +170,7 @@ console.log('===>Myinfo', myInfo[0]);
                 <div className="form__content__second">
                   <p>Description</p>
                   <td align="right" valign="top">
-                    <input
+                    <textarea
                       value={local.descriptionInput.value}
                       placeholder={myInfo[0].description
                         ?

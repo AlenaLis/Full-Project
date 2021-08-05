@@ -1,13 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
+import {getAllArticles} from "../../services";
 
 import mainhuman from '../../assets/images/human.png';
 import human1 from '../../assets/images/human.png';
 import eye from '../../assets/images/eye icon.png';
-import art from '../../assets/images/art4.png';
 import question from '../../assets/images/question.png';
 import './Main.scss';
-import {getAllArticles} from "../../services";
 
 const Main = () => {
 
@@ -16,7 +15,6 @@ const Main = () => {
   const [myArticle, setMyArticle] = useState([])
 
   const newArray = myArticle?.slice(startIndex, endIndex);
-
 
   const goToPreviousPage = () => {
     if (startIndex !== 0) {
@@ -58,13 +56,12 @@ let mainArticle = myArticle[0];
 
   return (
     <div>
-      {/*{(myArticle.length > 0) && (myUser.length > 0) ?*/}
-      {(myArticle.length > 0) ?
+      {(myArticle?.length > 0) ?
         <div className="main">
           <div className="main__top">
             <div>
               <img
-                src={question}
+                src= {mainArticle?.imageSrc.dataUrl || question}
                 alt='Image from the most popular art'
                 className='main__art'
               />
@@ -93,8 +90,9 @@ let mainArticle = myArticle[0];
                 <div className="main__panel__bottom__human">
                   <div>
                     <img
-                      src={mainhuman}
+                      src={ mainArticle.user.imageSrc?.dataUrl || mainhuman}
                       alt='User photo'
+                      className="main__user_photo"
                     />
                   </div>
                   <div>
@@ -139,8 +137,8 @@ let mainArticle = myArticle[0];
                 <div className="main__bottom__new">
                   <div>
                     <img
-                      src={el.imageSrc || question}
-                      alt='Image from the most popular art'
+                      src={el.imageSrc.dataUrl || question}
+                      alt='Image from the article'
                       className='second__arts'
                     />
                   </div>
@@ -167,7 +165,11 @@ let mainArticle = myArticle[0];
                     <div className="main__panel__bottom">
                       <div className="main__panel__bottom__human">
                         <div>
-                          <img src={human1}/>
+                          <img
+                            src={el.user.imageSrc?.dataUrl || human1}
+                            alt="User's photo"
+                            className="user__photo"
+                          />
                         </div>
                         <div>
                           <p className="p__human">

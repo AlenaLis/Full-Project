@@ -1,12 +1,13 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link, Redirect} from 'react-router-dom';
-
-import userValid from '../../assets/Services/userValid';
-
-import './LogIn.scss';
 import {login} from "../../services";
 
+import './LogIn.scss';
+
 const LogIn = () => {
+
+  const [token, setToken] = useState(localStorage.getItem('token'))
+
   const [person, setPerson] = useState({
     inputForEmail: {
       value: '',
@@ -18,7 +19,6 @@ const LogIn = () => {
     }
   });
 
-  const [allPersons, setAllPersons] = useState(false);
   const isPerson = localStorage.getItem('users');
 
   useEffect(() => {
@@ -26,7 +26,6 @@ const LogIn = () => {
       localStorage.setItem('users', JSON.stringify([]))
     }
   }, [])
-
 
   const setPersons = () => {
     login({
@@ -36,15 +35,13 @@ const LogIn = () => {
       setToken(res.token)
       localStorage.setItem('userId',  res.userId)
       localStorage.setItem('token', res.token)
+      window.location.reload();
     })
   };
 
   const checkPerson = async () => {
     await setPersons()
-    // window.location.reload();
   };
-
-  const [token, setToken] = useState(localStorage.getItem('token'))
 
   const handleChange = (e, key) => {
     const {value, type} = e.target
@@ -56,10 +53,6 @@ const LogIn = () => {
       },
     }))
   };
-
-  // if (allPersons === true) {
-  //   localStorage.setItem('isLogin', JSON.stringify(true))
-  // }
 
   return (
     <div>
@@ -78,6 +71,7 @@ const LogIn = () => {
                   handleChange(e, 'inputForEmail')
                 }}
               type="text"
+              placeholder='Please, write your email'
             />
             <p>Password</p>
             <input
@@ -88,6 +82,7 @@ const LogIn = () => {
                   handleChange(e, 'inputForPassword')
                 }}
               type="password"
+              placeholder='Please, write your password'
             />
           </form>
         </div>

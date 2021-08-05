@@ -6,9 +6,9 @@
     margin: 80px 0;
 
     .main__art {
-      width: 582px;
-      height: 397px;
-
+      max-width: 582px;
+      max-height: 397px;
+      object-fit: contain;
     }
 
     .main__panel {
@@ -65,6 +65,12 @@
           justify-content: space-between;
           align-content: space-between;
 
+          .main__user_photo {
+            border-radius: 100px;
+            width: 40px;
+            height: 40px;
+          }
+
           .p__human {
             margin-left: 8px;
             font-family: 'IBM Plex Sans', sans-serif;
@@ -114,8 +120,9 @@
         margin: 0px 0px 40px 0px;
 
         .second__arts {
-          width: 367px;
-          height: 260px;
+          object-fit: contain;
+          max-width: 367px;
+          max-height: 260px;
         }
 
         .main__panel__bottom__art {
@@ -171,6 +178,12 @@
               display: flex;
               justify-content: space-between;
               align-content: space-between;
+
+              .user__photo {
+                border-radius: 100px;
+                width: 40px;
+                height: 40px;
+              }
 
               .p__human {
                 margin-left: 8px;

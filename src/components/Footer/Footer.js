@@ -6,12 +6,11 @@ import './Footer.scss';
 
 const Footer = () => {
 
-  const [isLogin, setIsLogin] = useState(JSON.parse(localStorage.getItem('isLogin')));
+  const token = localStorage.getItem('token');
 
   const islogout = () => {
-    localStorage.setItem('isLogin', JSON.stringify(false))
-    setIsLogin(JSON.parse(localStorage.getItem('isLogin')))
-    localStorage.setItem('myUser', JSON.stringify([]))
+    localStorage.setItem('token', JSON.stringify([]))
+    localStorage.removeItem('token', JSON.stringify([]))
     window.location.reload();
   };
 
@@ -26,7 +25,7 @@ const Footer = () => {
                 alt='Logo'
               />
             </div>
-            {!isLogin
+            {!token
               ? (
                 <div>
                   <Link to='/singin/'>

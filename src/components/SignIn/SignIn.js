@@ -1,9 +1,10 @@
 import React, {useCallback, useState} from 'react';
+import {registration} from "../../services";
 
 import validation from '../../assets/Services/validation';
 
 import './SignIn.scss'
-import {countWatches, login, registration} from "../../services";
+import {Redirect} from "react-router-dom";
 
 const SignIn = () => {
 
@@ -33,6 +34,8 @@ const SignIn = () => {
     passField: true,
   });
 
+  const [validate, setValidate] = useState(false)
+
   const handleChange = (e, key) => {
     const {value, type} = e.target
     setForm((prevState) => ({
@@ -48,12 +51,12 @@ const SignIn = () => {
     registration({
       inputForEmail: form.emailInput.value,
       inputForPassword: form.passwordInput.value,
-      name:form.firstNameInput.value,
-      lastName:form.secondNameInput.value,
+      name: form.firstNameInput.value,
+      lastName: form.secondNameInput.value,
     }).then(res => {
-      console.log('===>res', res);
+      setValidate(true)
     })
-  }, [])
+  }, [form])
 
   const checkValid = () => {
     const {object, isValid} = validation(form);
@@ -80,13 +83,14 @@ const SignIn = () => {
               }}
               className={valid.firstNameField ? 'input' : 'input error-input'}
               type="text"
+              placeholder='Please, write your name'
             />
             {!valid.firstNameField &&
             <p className="validation">
               Please enter other variant of the first name.
             </p>
             }
-            <p>Last name</p>
+            <p>Second name</p>
             <input
               value={form.secondNameInput.value}
               onChange={
@@ -98,6 +102,7 @@ const SignIn = () => {
                 :
                 'input error-input'}
               type="text"
+              placeholder='Please, write your second name'
             />
             {!valid.lastNameField &&
             <p className="validation">
@@ -116,6 +121,7 @@ const SignIn = () => {
                 :
                 'input error-input'}
               type="text"
+              placeholder='Please, write your email'
             />
             {!valid.emailField &&
             <p className="validation">
@@ -134,6 +140,7 @@ const SignIn = () => {
                 :
                 'input error-input'}
               type="password"
+              placeholder='Please, write your password'
             />
             {!valid.passField &&
             <p className="validation">
@@ -154,6 +161,7 @@ const SignIn = () => {
           </div>
         </div>
       </div>
+      {validate && <Redirect to="/singin/"/>}
     </div>
   );
 }

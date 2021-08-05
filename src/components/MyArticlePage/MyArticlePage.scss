@@ -1,3 +1,30 @@
+@media screen and (max-width: 1035px) {
+
+  .inProf__container {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 700px) {
+
+  .main__panel__bottom__art {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .main__panel__bottom {
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      align-items: center;
+    }
+  }
+}
+
 .inProf__container {
   display: flex;
   justify-content: space-between;
@@ -24,6 +51,18 @@
       display: flex;
       flex-direction: column;
 
+      .user_photo {
+        border-radius: 100px;
+        width: 126px;
+        height: 126px;
+      }
+
+      .main__user_photo {
+        border-radius: 100px;
+        width: 126px;
+        height: 126px;
+      }
+
       h3 {
         font-size: 24px;
         line-height: 24px;
@@ -41,7 +80,6 @@
         font-weight: normal;
         font-size: 14px;
         line-height: 20px;
-
       }
 
       img {
@@ -62,12 +100,19 @@
         .main__bottom__new {
           margin: 0 0 40px 0;
 
+          .second__arts {
+            max-width: 664px;
+            max-height: 395px;
+            object-fit: contain;
+          }
+
           .main__panel__bottom__art {
             width: 664px;
             border-bottom-width: 1px;
             border-bottom-style: solid;
             border-bottom-color: #EBEBEB;
             margin-bottom: 40px;
+
 
             button {
               max-height: 200px;
@@ -121,6 +166,12 @@
                 align-content: space-between;
                 align-items: center;
                 height: 70px;
+
+                .user_photo {
+                  border-radius: 100px;
+                  width: 40px;
+                  height: 40px;
+                }
 
                 .p__human {
                   margin-left: 8px;

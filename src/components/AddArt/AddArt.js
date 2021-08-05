@@ -1,4 +1,5 @@
-import React, {useCallback,useState, useEffect} from 'react';
+import React, {useCallback, useState, useEffect, useRef, SetStateAction} from 'react';
+import {addOneArticle} from "../../services";
 import {Editor} from 'react-draft-wysiwyg';
 import {EditorState, convertToRaw} from 'draft-js';
 import {Redirect} from 'react-router-dom';
@@ -7,8 +8,7 @@ import draftToHtml from 'draftjs-to-html';
 
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './AddArt.scss';
-import {addOneArticle, login, registration} from "../../services";
-import axios from "axios";
+
 
 const AddArt = () => {
 
@@ -24,17 +24,45 @@ const AddArt = () => {
     image: '',
   });
 
+  // const addImage = async (image) => {
+  //   const response = await ApiService.post({
+  //     resource: `cleaners/gallery`,
+  //     params: {
+  //       file: {
+  //         dataUrl: image,
+  //         format: 'png'
+  //       }
+  //     }
+  //   });
+  //   // @ts-ignore
+  //   console.log('response', response.data.path);
+  // };
+  const [art, setMyArt] = useState()
+
+  const setArt = useCallback(() => {
+    addOneArticle({
+      title: dataForm.title,
+      category: dataForm.category,
+      textArt: dataForm.titleForShow,
+      data: dataForm.date2,
+      imageSrc: {
+        dataUrl: art,
+        format: 'png'
+      }
+    }).then(res => {
+      window.location.reload();
+    })
+  }, [dataForm, art])
 
   const token = localStorage.getItem('token');
 
   let newDate = dataForm.date;
   newDate = new Date().toLocaleDateString();
 
-  let newImage = String(dataForm.image)
-
   const changeDataInput = (e, key) => {
 
     let dataText = draftToHtml(convertToRaw(dataForm.description.getCurrentContent()));
+
     if (key === 'description') {
       setDataForm((prevState) => ({
         ...prevState,
@@ -43,6 +71,7 @@ const AddArt = () => {
         date2: newDate,
         id: Date.now(),
       }))
+
     } else {
       const {value} = e.target
       setDataForm((prevState) => ({
@@ -55,52 +84,24 @@ const AddArt = () => {
     }
   }
 
-  const imageOnChange = (e) => {
-    const file = e.target.files[0];
-    // saveAs(new Blob(e.target.files[0], {type}),'test');
-    // console.log('===>new Blob(file)', new Blob(file, {type: 'text/plain'}));
-    setDataForm((prevState) => ({
-      ...prevState,
-      // image: file,
-      image: URL.createObjectURL(file),
-    }))
-  }
+  const uploadImagesWithComp = async (e) => {
+    const imageDataUrl = await readFile(e);
+    console.log('===>imageDataUrl', imageDataUrl);
+    setMyArt(imageDataUrl);
+  };
+  const readFile = (image) =>
+    new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => resolve(reader.result), false);
+      reader.readAsDataURL(image);
+    });
 
-  const setArt =  useCallback( () => {
-    console.log('===>dataForm.image', dataForm.image);
-    addOneArticle({
-      title: dataForm.title,
-      category: dataForm.category,
-      textArt: dataForm.titleForShow,
-      data: dataForm.date2,
-      imageSrc: dataForm.image,
-    }).then(res => {
-      console.log('===>article', res);
-    })
-  }, [dataForm])
-
-
-  // useEffect(() => {
-  //   addOneArticle()
-  // }, [])
-  const  createNewArt = () => {
-    console.log('===>dataForm', dataForm);
+  const createNewArt = () => {
     setArt()
-    console.log('===>dataForm FIELELELLE', dataForm.image);
   }
 
-  const  addPicture = () => {
-
-
-  }
-  // console.log('===>dataForm FIELELELLE',(String(dataForm.image)));
-  // console.log('===>dataForm IMAGEEEE', dataForm.image);
   return (
     <div>
-      {dataForm.image && <img style={
-        {width: '500px',
-        height: '500px'
-        }} src={dataForm.image} alt=""/>}
       <div className='addArt__content'>
         <div>
           <h2 className="h2__text"> Add article </h2>
@@ -145,29 +146,23 @@ const AddArt = () => {
               className='button__publish'
               onClick={createNewArt}
             >
-              Publish an article
+              <p>Publish an article</p>
             </button>
           </Link>
-
           <button
             className='button__create_image'
-            onClick={addPicture}
           >
-            <span className="text">
-               Add a picture
-            </span>
+
+            <p>Add a picture</p>
+
             <input
               className="addPicture"
               type="file"
-              accept=".png, .jpg"
-              src="/uploads"
+              accept="image/png, image/jpeg"
               onChange={(e) => {
-                imageOnChange(e)
+                uploadImagesWithComp(e.target.files[0])
               }}
             />
-          </button>
-          <button type="submit" className="button">
-            Submit
           </button>
         </div>
       </div>
