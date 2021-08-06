@@ -4,8 +4,9 @@ To start project you should:
 
 1) Open two terminals;
 2) At first terminal you should start api part of the project:
-  cd api
+  ```cd api
   yarn run server
+  ```
 3) At second terminal you should start client part of the project:
   cd client
   yarn start
