@@ -1,19 +1,20 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Link, Redirect} from 'react-router-dom';
-import {getOneArticle, getProfileInfo} from "../../services";
 
-import question from "../../assets/images/question.png";
+import {getOneArticle, getProfileInfo} from '../../services';
+
+import question from '../../assets/images/question.png';
 import human1 from '../../assets/images/human.png';
 import eye from '../../assets/images/eye icon.png';
 import prof from '../../assets/images/prof_photo.png';
+
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './MyArticlePage.scss';
 
-
 const MyArticlePage = () => {
 
-  const [myInfo, setMyInfo] = useState([])
-  const [myArticle, setMyArticle] = useState([])
+  const [myInfo, setMyInfo] = useState([]);
+  const [myArticle, setMyArticle] = useState([]);
 
   const token = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');

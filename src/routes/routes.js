@@ -1,10 +1,10 @@
-import Main from "../components/Main/Main";
-import ProfileInfo from "../components/ProfileInfo/ProfileInfo";
-import AddArt from "../components/AddArt/AddArt";
-import MyArticlePage from "../components/MyArticlePage/MyArticlePage";
-import LogIn from "../components/LogIn/LogIn";
-import SignIn from "../components/SignIn/SignIn";
-import FullArticle from "../components/FullArticle/FullArticle";
+import Main from '../components/Main/Main';
+import ProfileInfo from '../components/ProfileInfo/ProfileInfo';
+import AddArt from '../components/AddArt/AddArt';
+import MyArticlePage from '../components/MyArticlePage/MyArticlePage';
+import LogIn from '../components/LogIn/LogIn';
+import SignIn from '../components/SignIn/SignIn';
+import FullArticle from '../components/FullArticle/FullArticle';
 
 export const routes = [
   {

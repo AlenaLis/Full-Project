@@ -1,18 +1,20 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
+
 import {getAllArticles} from "../../services";
 
 import mainhuman from '../../assets/images/human.png';
 import human1 from '../../assets/images/human.png';
 import eye from '../../assets/images/eye icon.png';
 import question from '../../assets/images/question.png';
+
 import './Main.scss';
 
 const Main = () => {
 
   let [startIndex, setStartIndex] = useState(0);
   let [endIndex, setEndIndex] = useState(6);
-  const [myArticle, setMyArticle] = useState([])
+  const [myArticle, setMyArticle] = useState([]);
 
   const newArray = myArticle?.slice(startIndex, endIndex);
 
@@ -40,7 +42,7 @@ const Main = () => {
     }
   };
 
-let mainArticle = myArticle[0];
+  let mainArticle = myArticle[0];
 
   if (myArticle.length > 1) {
     for (let i = 0; i < myArticle.length; i++) {
@@ -61,7 +63,7 @@ let mainArticle = myArticle[0];
           <div className="main__top">
             <div>
               <img
-                src= {mainArticle?.imageSrc.dataUrl || question}
+                src={mainArticle?.imageSrc.dataUrl || question}
                 alt='Image from the most popular art'
                 className='main__art'
               />
@@ -90,7 +92,7 @@ let mainArticle = myArticle[0];
                 <div className="main__panel__bottom__human">
                   <div>
                     <img
-                      src={ mainArticle.user.imageSrc?.dataUrl || mainhuman}
+                      src={mainArticle.user.imageSrc?.dataUrl || mainhuman}
                       alt='User photo'
                       className="main__user_photo"
                     />
@@ -100,8 +102,8 @@ let mainArticle = myArticle[0];
                       {mainArticle?.user
                         ?
                         (
-                        mainArticle.user.name + ' ' +
-                        mainArticle.user.lastName
+                          mainArticle.user.name + ' ' +
+                          mainArticle.user.lastName
                         )
                         :
                         ''

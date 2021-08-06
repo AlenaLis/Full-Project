@@ -1,11 +1,13 @@
 import {Link} from 'react-router-dom';
 import React, {useCallback, useEffect, useState} from 'react';
-import {countWatches, getOneArticleById} from "../../services";
 
+import {countWatches, getOneArticleById} from '../../services';
+
+import question from '../../assets/images/question.png';
 import img_human from '../../assets/images/human.png';
 import eye from '../../assets/images/eye icon.png';
+
 import './FullArticle.scss';
-import question from "../../assets/images/question.png";
 
 const FullArticle = () => {
 

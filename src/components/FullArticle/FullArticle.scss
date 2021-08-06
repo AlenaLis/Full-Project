@@ -1,4 +1,5 @@
 @media screen and (max-width: 1070px) {
+
   .Art__container {
     display: flex;
     flex-direction: column;
@@ -10,6 +11,26 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+
+      .h2__text {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .main__panel__bottom__art {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .main__panel__bottom {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
     }
   }
 }
@@ -59,9 +80,12 @@
             border-radius: 118px;
             width: 100px;
             align-items: center;
-            margin-bottom: -20px;
+
             height: fit-content;
+            min-height: 30px;
             max-width: 100px;
+            margin-bottom: 10px;
+            margin-top: 10px;
           }
 
           .h2__text {
@@ -112,11 +136,6 @@
                 color: #8C8C8C;
                 font-size: 16px;
                 line-height: 26px;
-              }
-
-              img {
-                width: 676px;
-                height: 399px;
               }
 
               figcaption {

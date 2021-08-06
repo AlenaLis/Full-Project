@@ -1,14 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Link, Redirect} from 'react-router-dom';
-import {login} from "../../services";
+
+import {login} from '../../services';
 
 import './LogIn.scss';
 
 const LogIn = () => {
 
-  const [token, setToken] = useState(localStorage.getItem('token'))
+  const [token, setToken] = useState(localStorage.getItem('token'));
 
   const [person, setPerson] = useState({
+
     inputForEmail: {
       value: '',
       type: '',
@@ -19,21 +21,13 @@ const LogIn = () => {
     }
   });
 
-  const isPerson = localStorage.getItem('users');
-
-  useEffect(() => {
-    if (!isPerson) {
-      localStorage.setItem('users', JSON.stringify([]))
-    }
-  }, [])
-
   const setPersons = () => {
     login({
       inputForEmail: person.inputForEmail.value,
       inputForPassword: person.inputForPassword.value
     }).then(res => {
       setToken(res.token)
-      localStorage.setItem('userId',  res.userId)
+      localStorage.setItem('userId', res.userId)
       localStorage.setItem('token', res.token)
       window.location.reload();
     })

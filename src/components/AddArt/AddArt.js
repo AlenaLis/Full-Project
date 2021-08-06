@@ -1,10 +1,11 @@
-import React, {useCallback, useState, useEffect, useRef, SetStateAction} from 'react';
-import {addOneArticle} from "../../services";
+import React, {useCallback, useState} from 'react';
 import {Editor} from 'react-draft-wysiwyg';
 import {EditorState, convertToRaw} from 'draft-js';
 import {Redirect} from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import draftToHtml from 'draftjs-to-html';
+
+import {addOneArticle} from '../../services';
 
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './AddArt.scss';
@@ -24,20 +25,7 @@ const AddArt = () => {
     image: '',
   });
 
-  // const addImage = async (image) => {
-  //   const response = await ApiService.post({
-  //     resource: `cleaners/gallery`,
-  //     params: {
-  //       file: {
-  //         dataUrl: image,
-  //         format: 'png'
-  //       }
-  //     }
-  //   });
-  //   // @ts-ignore
-  //   console.log('response', response.data.path);
-  // };
-  const [art, setMyArt] = useState()
+  const [art, setMyArt] = useState();
 
   const setArt = useCallback(() => {
     addOneArticle({
@@ -52,7 +40,7 @@ const AddArt = () => {
     }).then(res => {
       window.location.reload();
     })
-  }, [dataForm, art])
+  }, [dataForm, art]);
 
   const token = localStorage.getItem('token');
 
@@ -86,9 +74,9 @@ const AddArt = () => {
 
   const uploadImagesWithComp = async (e) => {
     const imageDataUrl = await readFile(e);
-    console.log('===>imageDataUrl', imageDataUrl);
     setMyArt(imageDataUrl);
   };
+
   const readFile = (image) =>
     new Promise((resolve) => {
       const reader = new FileReader();
@@ -98,7 +86,7 @@ const AddArt = () => {
 
   const createNewArt = () => {
     setArt()
-  }
+  };
 
   return (
     <div>
@@ -168,7 +156,7 @@ const AddArt = () => {
       </div>
       {!token && <Redirect to="/"/>}
     </div>
-  )
-}
+  );
+};
 
 export default AddArt;

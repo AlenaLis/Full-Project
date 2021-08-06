@@ -1,10 +1,10 @@
 import React, {useCallback, useState} from 'react';
-import {registration} from "../../services";
+import {Redirect} from 'react-router-dom';
 
 import validation from '../../assets/Services/validation';
+import {registration} from '../../services';
 
 import './SignIn.scss'
-import {Redirect} from "react-router-dom";
 
 const SignIn = () => {
 
@@ -34,7 +34,7 @@ const SignIn = () => {
     passField: true,
   });
 
-  const [validate, setValidate] = useState(false)
+  const [validate, setValidate] = useState(false);
 
   const handleChange = (e, key) => {
     const {value, type} = e.target

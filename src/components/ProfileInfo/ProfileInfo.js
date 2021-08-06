@@ -1,10 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {changeProfileInfo, getProfileInfo} from "../../services";
 import {Redirect} from 'react-router-dom';
+
+import {changeProfileInfo, getProfileInfo} from '../../services';
 
 import prof from '../../assets/images/prof_photo.png';
 import './ProfileInfo.scss';
-import question from "../../assets/images/question.png";
 
 const ProfileInfo = () => {
 
@@ -31,10 +31,10 @@ const ProfileInfo = () => {
     },
   });
 
-  const [photo, setMyPhoto] = useState()
-  const [myInfo, setMyInfo] = useState([])
+  const [photo, setMyPhoto] = useState();
+  const [myInfo, setMyInfo] = useState([]);
 
-  const userId = localStorage.getItem('userId')
+  const userId = localStorage.getItem('userId');
   const token = localStorage.getItem('token');
 
   const getProfileApi = useCallback(() => {
@@ -58,11 +58,15 @@ const ProfileInfo = () => {
     getProfileApi()
   }, [])
 
+  const checkLengthInfoName = local.firstNameInput.value === '' ? myInfo[0]?.name : local.firstNameInput.value;
+  const checkLengthInfoSecondName = local.secondNameInput.value === '' ? myInfo[0]?.lastName : local.secondNameInput.value;
+  const checkLengthInfoDescription = local.descriptionInput.value === '' ? myInfo[0]?.description : local.descriptionInput.value;
+
   const newProfileApi = useCallback(() => {
     changeProfileInfo({
-      name: local.firstNameInput.value,
-      lastName: local.secondNameInput.value,
-      description: local.descriptionInput.value,
+      name: checkLengthInfoName,
+      lastName: checkLengthInfoSecondName,
+      description: checkLengthInfoDescription,
       imageSrc: {
         dataUrl: photo,
         format: 'png'
@@ -85,13 +89,14 @@ const ProfileInfo = () => {
     const imageDataUrl = await readFile(e);
     setMyPhoto(imageDataUrl);
   };
+
   const readFile = (image) =>
     new Promise((resolve) => {
       const reader = new FileReader();
       reader.addEventListener('load', () => resolve(reader.result), false);
       reader.readAsDataURL(image);
     });
-console.log('===>myInfo', myInfo[0]);
+
   return (
     <div>
       <div className="prof__content">
@@ -154,8 +159,7 @@ console.log('===>myInfo', myInfo[0]);
                         (e) => {
                           handleChange(e, 'secondNameInput')
                         }}
-                      value=
-                        {local.secondNameInput.value}
+                      value={local.secondNameInput.value}
                       placeholder=
                         {myInfo[0].lastName ?
                           myInfo[0].lastName
